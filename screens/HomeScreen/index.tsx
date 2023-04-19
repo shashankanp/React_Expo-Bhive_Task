@@ -27,6 +27,7 @@ const HomeScreen = () => {
         <Text
           style={{ fontFamily: "Poppins_400Regular" }}
           className="text-center text-white font-medium text-xl "
+          // onPress={() => navigation.navigate("LoginScreen")}
         >
           Fill your first form!
         </Text>
