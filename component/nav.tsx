@@ -1,15 +1,7 @@
-"use client";
-
 import React from "react";
-import Link from "next/link";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../../../utils/firebase";
-import dynamic from "next/dynamic";
-import Logo from "../../../public/bhive_logo.png";
-import Image from "next/image";
+import Logo from "../assets/bhive_logo.png";
 
 function Nav() {
-  const [user, loading] = useAuthState(auth);
 
   return (
     <nav>
