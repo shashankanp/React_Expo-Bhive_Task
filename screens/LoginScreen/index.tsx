@@ -5,7 +5,22 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { useState, useEffect } from "react";
 import * as WebBrowser from "expo-web-browser";
 import * as Google from "expo-auth-session/providers/google";
+import * as Location from "expo-location";
 import axios from "axios";
+
+const getUserLocation = async () => {
+  let { status } = await Location.requestForegroundPermissionsAsync();
+
+  if (status !== "granted") {
+    console.log("Permission to access location was denied");
+    return;
+  }
+
+  let location = await Location.getCurrentPositionAsync({});
+  console.log(location.coords.latitude, location.coords.longitude);
+};
+
+getUserLocation();
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -13,9 +28,14 @@ export default function Login() {
   const [token, setToken] = useState(null);
   const [user, setUser] = useState(null);
   const [request, response, promptAsync] = Google.useAuthRequest({
-    androidClientId: "process.env.GOOGLE_WEB_ID",
-    iosClientId: "process.env.GOOGLE_IOS_ID",
-    webClientId: "process.env.GOOGLE_ANDROID_ID",
+    androidClientId:
+      "498611362161-pbiq8ni17i9donl64m9q5cl295j86d6e.apps.googleusercontent.com",
+    iosClientId:
+      "498611362161-qp4ok94q1iov73mpthrv0hgqs7so11in.apps.googleusercontent.com",
+    expoClientId:
+      "498611362161-tsh8o9q4kp23cg8adgbn6n2g9k6rrg7u.apps.googleusercontent.com",
+    webClientId:
+      "498611362161-tsh8o9q4kp23cg8adgbn6n2g9k6rrg7u.apps.googleusercontent.com",
   });
 
   useEffect(() => {

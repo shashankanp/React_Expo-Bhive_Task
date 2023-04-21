@@ -1,5 +1,5 @@
-import connectMongo from "../../../../utils/connectMongo";
-import User from "../../../../models/firebaseUser";
+import connectMongo from "../../utils/connectMongo";
+import User from "../../models/firebaseUser";
 
 export default async (req: any, res: any) => {
   console.log("Connecting to Mongo");

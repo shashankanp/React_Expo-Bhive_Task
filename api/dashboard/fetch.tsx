@@ -1,5 +1,5 @@
-import connectMongo from "../../../../utils/connectMongo";
-import Input from "../../../../models/inputData";
+import connectMongo from "../../utils/connectMongo";
+import Input from "../../models/inputData";
 
 console.log("CONNECTING TO MONGO");
 connectMongo();

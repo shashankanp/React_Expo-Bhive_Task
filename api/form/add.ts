@@ -1,5 +1,5 @@
-import connectMongo from "../../../../utils/connectMongo";
-import Input from "../../../../models/inputData";
+import connectMongo from "../../utils/connectMongo";
+import Input from "../../models/inputData";
 
 export default async (req: any, res: any) => {
   console.log("Connecting to Mongo");
