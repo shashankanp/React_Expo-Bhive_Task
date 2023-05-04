@@ -6,21 +6,15 @@ import { useState, useEffect } from "react";
 import * as WebBrowser from "expo-web-browser";
 import * as Google from "expo-auth-session/providers/google";
 import axios from "axios";
-import UserLocation from "../../utils/location";
 import Auth from "../../utils/auth";
 
 WebBrowser.maybeCompleteAuthSession();
 
-const getLocation = async () => {
-  const { lat, long } = await UserLocation();
-  // console.log("Latitude:", lat, "Longitude:", long);
-};
-
-getLocation();
-
-export default function Login() {
+export default function Login({ navigation }) {
   const { user, request, promptAsync } = Auth();
-
+  useEffect(() => {
+    navigation.push("Dashboard");
+  }, [user]);
   return (
     <View className="shadow-xl mt-32 p-10 text-gray-700 rounded-lg max-w-sm mx-auto">
       <Text
@@ -59,7 +53,7 @@ export default function Login() {
             Sign in with Google
           </Text>
         </Pressable>
-        <Pressable className="text-white bg-gray-700 p-4 w-full font-medium rounded-lg flex-row align-middle gap-2 ">
+        {/* <Pressable className="text-white bg-gray-700 p-4 w-full font-medium rounded-lg flex-row align-middle gap-2 ">
           <FontAwesome5 name="microsoft" size={24} color="white" />
           <Text
             className="text-white pl-3"
@@ -67,7 +61,7 @@ export default function Login() {
           >
             Sign in with Microsoft
           </Text>
-        </Pressable>
+        </Pressable> */}
       </View>
     </View>
   );
