@@ -22,27 +22,29 @@ const Auth = () => {
   useEffect(() => {
     if (response?.type === "success") {
       setToken(response.authentication.accessToken);
+    }
+  }, [response]);
+
+  useEffect(() => {
+    if (token) {
+      const getUserInfo = async () => {
+        try {
+          const response = await fetch(
+            "https://www.googleapis.com/userinfo/v2/me",
+            {
+              headers: { Authorization: `Bearer ${token}` },
+            }
+          );
+          const user = await response.json();
+          setUser(user);
+          console.log("The user is: ", user);
+        } catch (error) {
+          console.log(error);
+        }
+      };
       getUserInfo();
     }
-  }, [response, token]);
-
-  const getUserInfo = async () => {
-    try {
-      const response = await fetch(
-        "https://www.googleapis.com/userinfo/v2/me",
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-
-      const user = await response.json();
-      setUser(user);
-      console.log("The user is: ", user);
-      // if (loading) return <Text className="text-3xl">Loading...</Text>;
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  }, [token]);
 
   useEffect(() => {
     if (user) {
@@ -57,13 +59,12 @@ const Auth = () => {
           return response.data;
         })
         .catch((err) => console.log("Firebase User Error:", err));
-      // route.push("/dashboard");
-    } else {
-      // console.log("Login");
     }
   }, [user]);
+
   console.log(user?.displayName, user?.email, user?.uid);
+
   return { user, request, promptAsync };
 };
-// const route = useRouter();
+
 export default Auth;

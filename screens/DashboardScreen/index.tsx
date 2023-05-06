@@ -8,7 +8,6 @@ import {
   TouchableOpacity,
 } from "react-native";
 import Auth from "../../utils/auth";
-// import ButtonGreen from "../../component/button";
 import axios from "axios";
 import { useState, useEffect } from "react";
 
@@ -41,19 +40,6 @@ export default function Dashboard({ navigation }) {
     },
   ];
   const user = { displayName: "Shash" };
-  // useEffect(() => {
-  //   axios
-  //     .get("https://next13-bhive-task-v1.vercel.app/api/dashboard/fetch", {
-  //       data: user,
-  //     })
-  //     .then((res: any) => {
-  //       setInputs(res.data.data);
-  //       console.log("user data: ", res.data.data);
-  //     })
-  //     .catch((err) => console.log(err));
-  // }, []);
-  // if (loading) return <Text  className="text-3xl">Loading...</Text>;
-  // if (!user) route.push("/auth/login");
 
   if (user)
     return (

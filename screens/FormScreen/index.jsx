@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { TextInput, Text, Button, Pressable, View } from "react-native";
+import { Picker } from "@react-native-picker/picker";
+import axios from "axios";
 
 import * as Yup from "yup";
 
@@ -7,16 +9,37 @@ import * as Yup from "yup";
 
 import { Formik } from "formik";
 
-const FormScreen = () => {
+const FormScreen = ({navigation}) => {
+  const [opportunities, setOpportunities] = useState();
+
   return (
     <Formik
       initialValues={{
         name: "",
         email: "",
-        // phone: "",
-        opportunity: "Revenue Based Finance",
+        phone: "",
+        opportunity: "Fractional Real Estate",
       }}
-      onSubmit={(values) => Alert.alert(JSON.stringify(values))}
+      onSubmit={async (values) => {
+        console.log(values);
+        axios
+          .post("https://next13-bhive-task-v1.vercel.app/api/form/add", {
+            firebase_uid: "Shashank Uid",
+            name: values.name,
+            email: values.email,
+            phone: values.phone,
+            opportunity: values.opportunity,
+            // photo: values.photo,
+          })
+          .then((response) => {
+            console.log("Input Success:", response);
+            navigation.navigate("Success");
+            return response.data;
+          })
+          .catch((err) => {
+            console.log("Input Error:", err);
+          });
+      }}
       validationSchema={Yup.object().shape({
         name: Yup.string()
           .min(3, "Name must be atleast 3 characters")
@@ -29,7 +52,13 @@ const FormScreen = () => {
             "Should be of format 'john@gmail.com'"
           )
           .required("Email is required"),
-        // phone: Yup.string().phone("IN").required("A phone number is required"),
+        phone: Yup.string()
+          .matches(
+            /((\+*)((0[ -]*)*|((91 )*))((\d{12})+|(\d{10})+))|\d{5}([- ]*)\d{6}/,
+            "Should be of valid format"
+          )
+          .max(10, "Can't be more than 10 numbers")
+          .required("A phone number is required"),
       })}
     >
       {({
@@ -108,28 +137,55 @@ const FormScreen = () => {
             {/* Opportunity Input Field */}
 
             {/* <View className="pb-2">
-                <Text className="block text-sm pb-2 font-medium">
-                  Opportunities
-                </Text>
-                <select
-                  name="opportunity"
-                  // defaultValue="rbf"
-                  value={values.opportunity}
-                  onChangeText={handleChange("opportunity")}
-                  onBlur={() => setFieldTouched("opportunity")}
-                  className="outline outline-2 outline-gray-500 p-2 rounded-md w-2/3 focus:border-teal-500 focus:ring-teal-500"
-                >
-                  <option value="Fractional Real Estate">
-                    <Text>Fractional Real Estate</Text>
-                  </option>
-                  <option value="Revenue Based Finance">
-                    <Text>Revenue Based Finance</Text>
-                  </option>
-                  <option value="Asset Leasing">
-                    <Text>Asset Leasing</Text>
-                  </option>
-                </select>
-              </View> */}
+              <Text className="block text-sm pb-2 font-medium">
+                Opportunities
+              </Text>
+              <select
+                name="opportunity"
+                // defaultValue="rbf"
+                value={values.opportunity}
+                onChangeText={handleChange("opportunity")}
+                onBlur={() => setFieldTouched("opportunity")}
+                className="outline outline-2 outline-gray-500 p-2 rounded-md w-2/3 focus:border-teal-500 focus:ring-teal-500"
+              >
+                <option value="Fractional Real Estate">
+                  <Text>Fractional Real Estate</Text>
+                </option>
+                <option value="Revenue Based Finance">
+                  <Text>Revenue Based Finance</Text>
+                </option>
+                <option value="Asset Leasing">
+                  <Text>Asset Leasing</Text>
+                </option>
+              </select>
+            </View> */}
+
+            <View className="pb-2">
+              <Text className="block text-sm font-medium">Opportunities</Text>
+
+              <Picker
+                selectedValue={opportunities}
+                onValueChange={(itemValue, itemIndex) => {
+                  setOpportunities(itemValue);
+                  // console.log(itemValue);
+                  console.log(opportunities);
+                }}
+                onChangeText={handleChange("opportunity")}
+                onBlur={() => setFieldTouched("opportunity")}
+                // value={opportunities}
+                className="border-2 border-gray-500 p-2 rounded-md focus:border-teal-500 focus:ring-teal-500"
+              >
+                <Picker.Item
+                  label="Fractional Real Estate"
+                  value="Fractional Real Estate"
+                />
+                <Picker.Item
+                  label="Revenue Based Finance"
+                  value="Revenue Based Finance"
+                />
+                <Picker.Item label="Asset Leasing" value="Asset Leasing" />
+              </Picker>
+            </View>
 
             <Button
               className="bg-teal-500 font-medium text-sm text-white py-3 mt-6 rounded-lg w-full"

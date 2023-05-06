@@ -13,7 +13,7 @@ WebBrowser.maybeCompleteAuthSession();
 export default function Login({ navigation }) {
   const { user, request, promptAsync } = Auth();
   useEffect(() => {
-    navigation.push("Dashboard");
+    // navigation.push("Dashboard");
   }, [user]);
   return (
     <View className="shadow-xl mt-32 p-10 text-gray-700 rounded-lg max-w-sm mx-auto">
