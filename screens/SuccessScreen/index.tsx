@@ -2,7 +2,7 @@ import Lottie from "lottie-react-native";
 import { View, Text, StyleSheet } from "react-native";
 import { useFonts, Poppins_400Regular } from "@expo-google-fonts/poppins";
 
-export default function Success() {
+export default function Success({ navigation }) {
   let [fontsLoaded] = useFonts({
     Poppins_400Regular,
   });
@@ -32,22 +32,18 @@ export default function Success() {
         <Text
           className="text-2xl pt-4 font-medium"
           style={{ fontFamily: "Poppins_400Regular" }}
+          onPress={() => navigation.navigate("Dashboard")}
         >
-          Check out your{" "}
-          {/* <Link href={"./dashboard"} className="underline">
-            dashboard
-          </Link>{" "} */}
-          to see your info
+          Check out your <Text className="underline">dashboard</Text> to see
+          your info
         </Text>
         <Text
           className="text-2xl pt-4 font-medium"
           style={{ fontFamily: "Poppins_400Regular" }}
+          onPress={() => navigation.navigate("Form")}
         >
-          You can click{" "}
-          {/* <Link href={"./form"} className="underline">
-            here
-          </Link>{" "} */}
-          to fill out another form{" "}
+          You can click <Text className="underline">here</Text> to fill out
+          another form{" "}
         </Text>
       </View>
     </View>

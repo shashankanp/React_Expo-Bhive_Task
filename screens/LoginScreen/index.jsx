@@ -1,19 +1,19 @@
 import React from "react";
 import { View, Text, Pressable, Image } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
-import { FontAwesome5 } from "@expo/vector-icons";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import * as WebBrowser from "expo-web-browser";
-import * as Google from "expo-auth-session/providers/google";
-import axios from "axios";
 import Auth from "../../utils/auth";
+import AuthContext from "../../providers/authProvider";
 
 WebBrowser.maybeCompleteAuthSession();
 
 export default function Login({ navigation }) {
-  const { user, request, promptAsync } = Auth();
+  const { user, setUser } = useContext(AuthContext);
+
+  const { request, promptAsync } = Auth();
   useEffect(() => {
-    // navigation.push("Dashboard");
+    setUser(user);
   }, [user]);
   return (
     <View className="shadow-xl mt-32 p-10 text-gray-700 rounded-lg max-w-sm mx-auto">

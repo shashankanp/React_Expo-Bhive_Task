@@ -1,13 +1,15 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext, createContext } from "react";
 import axios from "axios";
 import * as WebBrowser from "expo-web-browser";
 import * as Google from "expo-auth-session/providers/google";
+import AuthContext from "../providers/authProvider";
 
 WebBrowser.maybeCompleteAuthSession();
 
-const Auth = () => {
+const useAuth = () => {
+  const { user, setUser } = useContext(AuthContext);
   const [token, setToken] = useState(null);
-  const [user, setUser] = useState(null);
+
   const [request, response, promptAsync] = Google.useAuthRequest({
     androidClientId:
       "498611362161-pbiq8ni17i9donl64m9q5cl295j86d6e.apps.googleusercontent.com",
@@ -37,6 +39,7 @@ const Auth = () => {
           );
           const user = await response.json();
           setUser(user);
+
           console.log("The user is: ", user);
         } catch (error) {
           console.log(error);
@@ -48,8 +51,9 @@ const Auth = () => {
 
   useEffect(() => {
     if (user) {
+      setUser(user);
       axios
-        .post("/api/user/add", {
+        .post("https://next13-bhive-task-v1.vercel.app/api/user/add", {
           firebase_name: user?.displayName,
           firebase_mail: user?.email,
           firebase_uid: user?.uid,
@@ -64,7 +68,7 @@ const Auth = () => {
 
   console.log(user?.displayName, user?.email, user?.uid);
 
-  return { user, request, promptAsync };
+  return { request, promptAsync };
 };
 
-export default Auth;
+export default useAuth;

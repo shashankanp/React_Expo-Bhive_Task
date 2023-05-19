@@ -9,8 +9,9 @@ import * as Yup from "yup";
 
 import { Formik } from "formik";
 
-const FormScreen = ({navigation}) => {
+const FormScreen = ({ navigation }) => {
   const [opportunities, setOpportunities] = useState();
+  const [error, setError] = useState();
 
   return (
     <Formik
@@ -37,8 +38,10 @@ const FormScreen = ({navigation}) => {
             return response.data;
           })
           .catch((err) => {
+            setError(err.message);
             console.log("Input Error:", err);
           });
+        resetForm({ values: initialValues });
       }}
       validationSchema={Yup.object().shape({
         name: Yup.string()
@@ -167,8 +170,6 @@ const FormScreen = ({navigation}) => {
                 selectedValue={opportunities}
                 onValueChange={(itemValue, itemIndex) => {
                   setOpportunities(itemValue);
-                  // console.log(itemValue);
-                  console.log(opportunities);
                 }}
                 onChangeText={handleChange("opportunity")}
                 onBlur={() => setFieldTouched("opportunity")}
@@ -187,10 +188,15 @@ const FormScreen = ({navigation}) => {
               </Picker>
             </View>
 
+            {error && (
+              <Text className="text-red-700 mb-4 text-center bg-red-300 mx-5">
+                Email or Phone already exists
+              </Text>
+            )}
             <Button
               className="bg-teal-500 font-medium text-sm text-white py-3 mt-6 rounded-lg w-full"
               title="Submit"
-              // disabled={!isValid}
+              disabled={!isValid}
               onPress={handleSubmit}
             />
           </View>

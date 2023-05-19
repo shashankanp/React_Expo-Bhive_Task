@@ -5,7 +5,7 @@ import {
   Pressable,
   TouchableOpacity,
 } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Lottie from "lottie-react-native";
 import { useFonts, Poppins_400Regular } from "@expo-google-fonts/poppins";
@@ -15,9 +15,11 @@ const getLocation = async () => {
   const { lat, long } = await UserLocation();
   console.log("Latitude:", lat, "Longitude:", long);
 };
-getLocation();
 
 const HomeScreen = ({ navigation }) => {
+  useEffect(() => {
+    getLocation();
+  }, []);
   // const navigation = useNavigation();
   let [fontsLoaded] = useFonts({
     Poppins_400Regular,
