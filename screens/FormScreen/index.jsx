@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { TextInput, Text, Button, Pressable, View } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import axios from "axios";
-
+import AuthContext from "../../providers/authProvider";
 import * as Yup from "yup";
 
 // import "yup-phone";
@@ -12,6 +12,7 @@ import { Formik } from "formik";
 const FormScreen = ({ navigation }) => {
   const [opportunities, setOpportunities] = useState();
   const [error, setError] = useState();
+  const { user } = useContext(AuthContext);
 
   return (
     <Formik
@@ -25,7 +26,7 @@ const FormScreen = ({ navigation }) => {
         console.log(values);
         axios
           .post("https://next13-bhive-task-v1.vercel.app/api/form/add", {
-            firebase_uid: "Shashank Uid",
+            firebase_uid: user.id,
             name: values.name,
             email: values.email,
             phone: values.phone,

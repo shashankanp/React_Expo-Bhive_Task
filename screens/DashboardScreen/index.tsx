@@ -1,47 +1,26 @@
-import {
-  View,
-  Text,
-  Pressable,
-  Button,
-  ScrollView,
-  FlatList,
-  TouchableOpacity,
-} from "react-native";
-import Auth from "../../utils/auth";
+import { View, Text, Button, ScrollView, TouchableOpacity } from "react-native";
 import axios from "axios";
 import { useState, useEffect, useContext } from "react";
 import AuthContext from "../../providers/authProvider";
 
 export default function Dashboard({ navigation }) {
   const { user } = useContext(AuthContext);
-  console.log(user);
-  // const [inputs, setInputs] = useState();
-  const inputs = [
-    {
-      name: "John Doe",
-      email: "johndoe@example.com",
-      phone: "555-555-5555",
-      opportunity: "Sales Lead",
-    },
-    {
-      name: "Jane Smith",
-      email: "janesmith@example.com",
-      phone: "555-123-4567",
-      opportunity: "Customer Referral",
-    },
-    {
-      name: "Bob Johnson",
-      email: "bobjohnson@example.com",
-      phone: "555-987-6543",
-      opportunity: "Partnership",
-    },
-    {
-      name: "Samantha Lee",
-      email: "samlee@example.com",
-      phone: "555-222-3333",
-      opportunity: "Investor",
-    },
-  ];
+  const [inputs, setInputs] = useState([]);
+  console.log("Dashboard: ", user);
+  useEffect(() => {
+    if (user)
+      axios
+        .post(
+          "https://next13-bhive-task-v1.vercel.app/api/dashboard/fetchExpo",
+          {
+            data: user,
+          }
+        )
+        .then((res: any) => {
+          setInputs(res.data.data);
+          // console.log("user data: ", res.data.data);
+        });
+  });
 
   return (
     <View className="flex-1">

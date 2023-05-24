@@ -40,6 +40,17 @@ const useAuth = () => {
           const user = await response.json();
           setUser(user);
 
+          axios
+            .post("https://next13-bhive-task-v1.vercel.app/api/user/add", {
+              firebase_name: user?.name,
+              firebase_mail: user?.email,
+              firebase_uid: user?.id,
+            })
+            .then((response) => {
+              console.log("Firebase User Success:", response);
+              return response.data;
+            })
+            .catch((err) => console.log("Firebase User Error:", err));
           console.log("The user is: ", user);
         } catch (error) {
           console.log(error);
@@ -49,24 +60,22 @@ const useAuth = () => {
     }
   }, [token]);
 
-  useEffect(() => {
-    if (user) {
-      setUser(user);
-      axios
-        .post("https://next13-bhive-task-v1.vercel.app/api/user/add", {
-          firebase_name: user?.displayName,
-          firebase_mail: user?.email,
-          firebase_uid: user?.uid,
-        })
-        .then((response) => {
-          console.log("Firebase User Success:", response);
-          return response.data;
-        })
-        .catch((err) => console.log("Firebase User Error:", err));
-    }
-  }, [user]);
-
-  console.log(user?.displayName, user?.email, user?.uid);
+  // useEffect(() => {
+  //   if (user) {
+  //     setUser(user);
+  //     axios
+  //       .post("https://next13-bhive-task-v1.vercel.app/api/user/add", {
+  //         firebase_name: user?.name,
+  //         firebase_mail: user?.email,
+  //         firebase_uid: user?.id,
+  //       })
+  //       .then((response) => {
+  //         console.log("Firebase User Success:", response);
+  //         return response.data;
+  //       })
+  //       .catch((err) => console.log("Firebase User Error:", err));
+  //   }
+  // }, [user]);
 
   return { request, promptAsync };
 };

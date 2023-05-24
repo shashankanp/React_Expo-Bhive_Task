@@ -8,7 +8,7 @@ import AuthContext from "../../providers/authProvider";
 
 WebBrowser.maybeCompleteAuthSession();
 
-export default function Login({ navigation }) {
+export default function Login() {
   const { user, setUser } = useContext(AuthContext);
 
   const { request, promptAsync } = Auth();
