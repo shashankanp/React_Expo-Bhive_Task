@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, Pressable, Image } from "react-native";
+import { View, Text, Pressable, Image, ActivityIndicator } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { useState, useEffect, useContext } from "react";
 import * as WebBrowser from "expo-web-browser";
@@ -9,12 +9,17 @@ import AuthContext from "../../providers/authProvider";
 WebBrowser.maybeCompleteAuthSession();
 
 export default function Login() {
+  const [loading, setLoading] = useState(false);
+
   const { user, setUser } = useContext(AuthContext);
 
   const { request, promptAsync } = Auth();
   useEffect(() => {
     setUser(user);
+    setLoading(true);
+    // navigation.navigate("Dashboard", { screen: "DashboardScreen" });
   }, [user]);
+
   return (
     <View className="shadow-xl mt-32 p-10 text-gray-700 rounded-lg max-w-sm mx-auto">
       <Text
@@ -27,17 +32,6 @@ export default function Login() {
         <Text className="py-4" style={{ fontFamily: "Poppins_400Regular" }}>
           Sign in with one of the providers:
         </Text>
-        {user && (
-          <>
-            <View>
-              <Text>{user.name}</Text>
-            </View>
-            <Image
-              source={{ uri: user.picture }}
-              style={{ width: 100, height: 100, borderRadius: 50 }}
-            />
-          </>
-        )}
       </View>
       <View className="flex-col gap-4">
         <Pressable

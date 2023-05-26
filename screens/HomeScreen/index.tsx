@@ -1,10 +1,4 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  Pressable,
-  TouchableOpacity,
-} from "react-native";
+import { StyleSheet, Text, View, Pressable } from "react-native";
 import React, { useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Lottie from "lottie-react-native";
@@ -37,7 +31,7 @@ const HomeScreen = ({ navigation }) => {
       >
         Join our amazing family of investors today!
       </Text>
-      <TouchableOpacity className="bg-teal-500 rounded-lg py-4 bg-gradient-to-r from-green-500 to-green-700  font-medium text-lg  text-white w-1/2 justify-center align-middle ">
+      <Pressable className="bg-teal-500 rounded-lg py-4 bg-gradient-to-r from-green-500 to-green-700  font-medium text-lg  text-white w-1/2 justify-center align-middle ">
         <Text
           style={{ fontFamily: "Poppins_400Regular" }}
           className="text-center text-white font-medium text-xl "
@@ -45,7 +39,7 @@ const HomeScreen = ({ navigation }) => {
         >
           Fill your first form!
         </Text>
-      </TouchableOpacity>
+      </Pressable>
       <Lottie
         source={require("./../../assets/stonks.json")}
         autoPlay

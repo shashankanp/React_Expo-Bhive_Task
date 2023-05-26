@@ -47,11 +47,11 @@ const useAuth = () => {
               firebase_uid: user?.id,
             })
             .then((response) => {
-              console.log("Firebase User Success:", response);
+              // console.log("Firebase User Success:", response);
               return response.data;
             })
             .catch((err) => console.log("Firebase User Error:", err));
-          console.log("The user is: ", user);
+          // console.log("The user is: ", user);
         } catch (error) {
           console.log(error);
         }
@@ -59,23 +59,6 @@ const useAuth = () => {
       getUserInfo();
     }
   }, [token]);
-
-  // useEffect(() => {
-  //   if (user) {
-  //     setUser(user);
-  //     axios
-  //       .post("https://next13-bhive-task-v1.vercel.app/api/user/add", {
-  //         firebase_name: user?.name,
-  //         firebase_mail: user?.email,
-  //         firebase_uid: user?.id,
-  //       })
-  //       .then((response) => {
-  //         console.log("Firebase User Success:", response);
-  //         return response.data;
-  //       })
-  //       .catch((err) => console.log("Firebase User Error:", err));
-  //   }
-  // }, [user]);
 
   return { request, promptAsync };
 };

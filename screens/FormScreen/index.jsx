@@ -23,7 +23,7 @@ const FormScreen = ({ navigation }) => {
         opportunity: "Fractional Real Estate",
       }}
       onSubmit={async (values) => {
-        console.log(values);
+        // console.log(values);
         axios
           .post("https://next13-bhive-task-v1.vercel.app/api/form/add", {
             firebase_uid: user.id,
@@ -74,8 +74,8 @@ const FormScreen = ({ navigation }) => {
         isValid,
         handleSubmit,
       }) => (
-        <View className="p-12 ">
-          <Text className="text-gray-700 text-2xl pb-2">
+        <View className="p-12 pt-5 ">
+          <Text className="text-gray-700 text-2xl pb-2 ">
             Please enter your Information
           </Text>
           <Text className="text-lg text-gray-500">

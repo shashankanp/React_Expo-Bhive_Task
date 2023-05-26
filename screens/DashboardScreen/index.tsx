@@ -1,13 +1,38 @@
-import { View, Text, Button, ScrollView, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  Button,
+  ScrollView,
+  Pressable,
+  ActivityIndicator,
+} from "react-native";
 import axios from "axios";
 import { useState, useEffect, useContext } from "react";
 import AuthContext from "../../providers/authProvider";
+import { useIsFocused } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Dashboard({ navigation }) {
-  const { user } = useContext(AuthContext);
+  const { user, setUser } = useContext(AuthContext);
   const [inputs, setInputs] = useState([]);
-  console.log("Dashboard: ", user);
+  const isFocused = useIsFocused();
+  const [loading, setLoading] = useState(true);
+
+  const getData = async () => {
+    try {
+      const storedData = await AsyncStorage.getItem("@storage_Key");
+      if (storedData !== null) {
+        const user = JSON.parse(storedData);
+        setUser(user);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  // console.log("Dashboard: ", user);
   useEffect(() => {
+    getData();
     if (user)
       axios
         .post(
@@ -18,21 +43,25 @@ export default function Dashboard({ navigation }) {
         )
         .then((res: any) => {
           setInputs(res.data.data);
+          setLoading(false);
           // console.log("user data: ", res.data.data);
         });
-  });
+  }, [isFocused]);
 
   return (
     <View className="flex-1">
       <Text
         style={{ fontFamily: "Poppins_400Regular" }}
-        className="text-3xl mt-10 mb-3 ml-2"
+        className="text-3xl mt-5 mb-3 ml-2"
       >
         Welcome to your dashboard {user?.name}!
       </Text>
       {/* Details */}
       {/* If data is empty */}
-      {!Object.keys(inputs).length && (
+
+      {loading && <ActivityIndicator size="large" color="#00ff00" />}
+
+      {!loading && !Object.keys(inputs).length && (
         <View>
           <Text
             style={{ fontFamily: "Poppins_400Regular" }}
@@ -40,7 +69,7 @@ export default function Dashboard({ navigation }) {
           >
             You don't have any data available yet :(
           </Text>
-          <TouchableOpacity className="bg-teal-500 rounded-lg py-4 bg-gradient-to-r from-green-500 to-green-700  font-medium text-lg  text-white w-1/2 justify-center align-middle ml-2 ">
+          <Pressable className="bg-teal-500 rounded-lg py-4 bg-gradient-to-r from-green-500 to-green-700  font-medium text-lg  text-white w-1/2 justify-center align-middle ml-2 ">
             <Text
               style={{ fontFamily: "Poppins_400Regular" }}
               className="text-center text-white font-medium text-xl "
@@ -48,7 +77,7 @@ export default function Dashboard({ navigation }) {
             >
               Fill your first form!
             </Text>
-          </TouchableOpacity>
+          </Pressable>
         </View>
       )}
 
@@ -56,7 +85,7 @@ export default function Dashboard({ navigation }) {
 
       {Object.keys(inputs).length > 0 && (
         <View className="flex-1">
-          <TouchableOpacity className="bg-teal-500 rounded-lg py-4 bg-gradient-to-r from-green-500 to-green-700  font-medium text-lg  text-white w-1/2 justify-center align-middle ml-2 ">
+          <Pressable className="bg-teal-500 rounded-lg py-4 bg-gradient-to-r from-green-500 to-green-700  font-medium text-lg  text-white w-1/2 justify-center align-middle ml-2 ">
             <Text
               style={{ fontFamily: "Poppins_400Regular" }}
               className="text-center text-white font-medium text-xl "
@@ -64,7 +93,7 @@ export default function Dashboard({ navigation }) {
             >
               Fill another form!
             </Text>
-          </TouchableOpacity>
+          </Pressable>
           <Text
             style={{ fontFamily: "Poppins_400Regular" }}
             className="text-2xl mt-4 ml-2"
