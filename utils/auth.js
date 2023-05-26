@@ -9,6 +9,7 @@ WebBrowser.maybeCompleteAuthSession();
 const useAuth = () => {
   const { user, setUser } = useContext(AuthContext);
   const [token, setToken] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const [request, response, promptAsync] = Google.useAuthRequest({
     androidClientId:
@@ -48,6 +49,7 @@ const useAuth = () => {
             })
             .then((response) => {
               // console.log("Firebase User Success:", response);
+              setLoading(false);
               return response.data;
             })
             .catch((err) => console.log("Firebase User Error:", err));
@@ -60,7 +62,7 @@ const useAuth = () => {
     }
   }, [token]);
 
-  return { request, promptAsync };
+  return { request, promptAsync, loading };
 };
 
 export default useAuth;

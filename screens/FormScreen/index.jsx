@@ -10,7 +10,6 @@ import * as Yup from "yup";
 import { Formik } from "formik";
 
 const FormScreen = ({ navigation }) => {
-  const [opportunities, setOpportunities] = useState();
   const [error, setError] = useState();
   const { user } = useContext(AuthContext);
 
@@ -22,8 +21,7 @@ const FormScreen = ({ navigation }) => {
         phone: "",
         opportunity: "Fractional Real Estate",
       }}
-      onSubmit={async (values) => {
-        // console.log(values);
+      onSubmit={(values, { resetForm }) => {
         axios
           .post("https://next13-bhive-task-v1.vercel.app/api/form/add", {
             firebase_uid: user.id,
@@ -31,18 +29,17 @@ const FormScreen = ({ navigation }) => {
             email: values.email,
             phone: values.phone,
             opportunity: values.opportunity,
-            // photo: values.photo,
           })
           .then((response) => {
             console.log("Input Success:", response);
             navigation.navigate("Success");
+            resetForm();
             return response.data;
           })
           .catch((err) => {
             setError(err.message);
             console.log("Input Error:", err);
           });
-        resetForm({ values: initialValues });
       }}
       validationSchema={Yup.object().shape({
         name: Yup.string()
@@ -139,42 +136,15 @@ const FormScreen = ({ navigation }) => {
             </View>
 
             {/* Opportunity Input Field */}
-
-            {/* <View className="pb-2">
-              <Text className="block text-sm pb-2 font-medium">
-                Opportunities
-              </Text>
-              <select
-                name="opportunity"
-                // defaultValue="rbf"
-                value={values.opportunity}
-                onChangeText={handleChange("opportunity")}
-                onBlur={() => setFieldTouched("opportunity")}
-                className="outline outline-2 outline-gray-500 p-2 rounded-md w-2/3 focus:border-teal-500 focus:ring-teal-500"
-              >
-                <option value="Fractional Real Estate">
-                  <Text>Fractional Real Estate</Text>
-                </option>
-                <option value="Revenue Based Finance">
-                  <Text>Revenue Based Finance</Text>
-                </option>
-                <option value="Asset Leasing">
-                  <Text>Asset Leasing</Text>
-                </option>
-              </select>
-            </View> */}
-
             <View className="pb-2">
               <Text className="block text-sm font-medium">Opportunities</Text>
 
               <Picker
-                selectedValue={opportunities}
+                selectedValue={values.opportunity}
                 onValueChange={(itemValue, itemIndex) => {
-                  setOpportunities(itemValue);
+                  handleChange("opportunity")(itemValue);
                 }}
-                onChangeText={handleChange("opportunity")}
                 onBlur={() => setFieldTouched("opportunity")}
-                // value={opportunities}
                 className="border-2 border-gray-500 p-2 rounded-md focus:border-teal-500 focus:ring-teal-500"
               >
                 <Picker.Item
@@ -194,12 +164,16 @@ const FormScreen = ({ navigation }) => {
                 Email or Phone already exists
               </Text>
             )}
-            <Button
-              className="bg-teal-500 font-medium text-sm text-white py-3 mt-6 rounded-lg w-full"
-              title="Submit"
-              disabled={!isValid}
-              onPress={handleSubmit}
-            />
+            <Pressable className="bg-teal-500 rounded-lg py-4 bg-gradient-to-r from-green-500 to-green-700  font-medium text-lg  text-white w-1/2 mx-auto  ">
+              <Text
+                style={{ fontFamily: "Poppins_400Regular" }}
+                className="text-center text-white font-medium text-xl "
+                disabled={!isValid}
+                onPress={handleSubmit}
+              >
+                Submit
+              </Text>
+            </Pressable>
           </View>
         </View>
       )}
