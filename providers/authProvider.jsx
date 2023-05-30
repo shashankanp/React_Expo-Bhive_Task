@@ -8,6 +8,7 @@ export default AuthContext = createContext();
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
+  const [image, setImage] = useState(null);
 
   useEffect(() => {
     const loadUser = async () => {
@@ -48,7 +49,9 @@ export function AuthProvider({ children }) {
   }, [token]);
 
   return (
-    <AuthContext.Provider value={{ user, setUser, token, setToken }}>
+    <AuthContext.Provider
+      value={{ user, setUser, token, setToken, image, setImage }}
+    >
       {children}
     </AuthContext.Provider>
   );
