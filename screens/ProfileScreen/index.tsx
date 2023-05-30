@@ -1,12 +1,4 @@
-import {
-  View,
-  Text,
-  Image,
-  TextInput,
-  TouchableOpacity,
-  Platform,
-  Button,
-} from "react-native";
+import { View, Text, Image, TextInput, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import React, { useContext, useState, useEffect } from "react";
 import AuthContext from "../../providers/authProvider";

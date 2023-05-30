@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from "react";
 import {
   View,
   Text,
-  Button,
   ScrollView,
   Pressable,
   ActivityIndicator,
@@ -11,14 +10,12 @@ import axios from "axios";
 import AuthContext from "../../providers/authProvider";
 import { useIsFocused } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import Auth from "../../utils/auth";
 
 export default function Dashboard({ navigation }) {
   const { user, setUser } = useContext(AuthContext);
   const [inputs, setInputs] = useState([]);
   const isFocused = useIsFocused();
   const [loading, setLoading] = useState(true);
-  const { handleLogout } = Auth();
 
   const getData = async () => {
     try {
@@ -114,15 +111,7 @@ export default function Dashboard({ navigation }) {
           >
             Here is the {inputs.length} form details that you have provided:
           </Text>
-          <Pressable className="bg-teal-500 rounded-lg py-4 bg-gradient-to-r from-green-500 to-green-700  font-medium text-lg  text-white w-1/2 justify-center align-middle ml-2 ">
-            <Text
-              style={{ fontFamily: "Poppins_400Regular" }}
-              className="text-center text-white font-medium text-xl "
-              onPress={() => handleLogout()}
-            >
-              LogOut
-            </Text>
-          </Pressable>
+
           <ScrollView>
             <View>
               {inputs
