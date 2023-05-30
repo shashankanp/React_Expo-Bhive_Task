@@ -4,12 +4,12 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 const Stack = createNativeStackNavigator();
 
-const HomeStack = () => {
+const MainStack = () => {
   return (
-    <>
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Success" component={SuccessScreen} />
-    </>
+    </Stack.Navigator>
   );
 };
 
-export default HomeStack;
+export default MainStack;

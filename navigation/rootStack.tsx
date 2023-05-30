@@ -3,7 +3,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
 import AuthContext from "../providers/authProvider";
 import DrawerNav from "./drawerNav";
-import HomeStack from "./homeStack";
+import MainStack from "./mainStack";
 import AuthStack from "./authStack";
 
 const Stack = createNativeStackNavigator();
@@ -16,12 +16,12 @@ const Navcontainer = () => {
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         {user || token ? (
           <>
-            <Stack.Screen name="HomeDrawer" component={DrawerNav} />
-            <Stack.Screen name="Success" component={HomeStack} />
+            <Stack.Screen name="Drawer" component={DrawerNav} />
+            <Stack.Screen name="Main" component={MainStack} />
           </>
         ) : (
           <>
-            <Stack.Screen name="Home" component={AuthStack} />
+            <Stack.Screen name="Auth" component={AuthStack} />
           </>
         )}
       </Stack.Navigator>

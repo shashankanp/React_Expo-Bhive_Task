@@ -1,14 +1,28 @@
-// AuthProvider.js
 import React, { useState, useEffect, createContext } from "react";
 import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "../utils/firebase"; // Import the auth service from your firebase.ts file
+import { auth } from "../utils/firebase";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export const AuthContext = createContext();
+export default AuthContext = createContext();
 
 export function AuthProvider({ children }) {
-  const [user, setUser, token, setToken] = useState(null);
+  const [user, setUser] = useState(null);
+  const [token, setToken] = useState(null);
 
   useEffect(() => {
+    const loadUser = async () => {
+      try {
+        const storedToken = await AsyncStorage.getItem("token");
+        if (storedToken) {
+          setToken(storedToken);
+        }
+      } catch (error) {
+        console.log("Error loading token from AsyncStorage:", error);
+      }
+    };
+
+    loadUser();
+
     const authSubscriber = onAuthStateChanged(auth, (authUser) => {
       setUser(authUser);
     });
@@ -17,11 +31,25 @@ export function AuthProvider({ children }) {
     return authSubscriber;
   }, []);
 
+  useEffect(() => {
+    const storeToken = async () => {
+      try {
+        if (token) {
+          await AsyncStorage.setItem("token", token);
+        } else {
+          await AsyncStorage.removeItem("token");
+        }
+      } catch (error) {
+        console.log("Error storing token in AsyncStorage:", error);
+      }
+    };
+
+    storeToken();
+  }, [token]);
+
   return (
     <AuthContext.Provider value={{ user, setUser, token, setToken }}>
       {children}
     </AuthContext.Provider>
   );
 }
-
-export default AuthContext;
