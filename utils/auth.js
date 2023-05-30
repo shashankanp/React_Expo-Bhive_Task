@@ -3,12 +3,12 @@ import axios from "axios";
 import * as WebBrowser from "expo-web-browser";
 import * as Google from "expo-auth-session/providers/google";
 import AuthContext from "../providers/authProvider";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 WebBrowser.maybeCompleteAuthSession();
 
 const useAuth = () => {
-  const { user, setUser } = useContext(AuthContext);
-  const [token, setToken] = useState(null);
+  const { user, setUser, token, setToken } = useContext(AuthContext);
   const [loading, setLoading] = useState(true);
 
   const [request, response, promptAsync] = Google.useAuthRequest({
@@ -62,7 +62,24 @@ const useAuth = () => {
     }
   }, [token]);
 
-  return { request, promptAsync, loading };
+  const handleLogin = async () => {
+    const { authentication } = await promptAsync();
+    if (authentication?.accessToken) {
+      setToken(authentication.accessToken);
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      await AsyncStorage.removeItem("token");
+      setUser(null);
+      setToken(null);
+    } catch (error) {
+      console.log("Error removing token from AsyncStorage:", error);
+    }
+  };
+
+  return { handleLogin, handleLogout, loading, request, promptAsync };
 };
 
 export default useAuth;

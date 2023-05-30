@@ -1,3 +1,4 @@
+import React, { useState, useEffect, useContext } from "react";
 import {
   View,
   Text,
@@ -7,16 +8,17 @@ import {
   ActivityIndicator,
 } from "react-native";
 import axios from "axios";
-import { useState, useEffect, useContext } from "react";
 import AuthContext from "../../providers/authProvider";
 import { useIsFocused } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Auth from "../../utils/auth";
 
 export default function Dashboard({ navigation }) {
   const { user, setUser } = useContext(AuthContext);
   const [inputs, setInputs] = useState([]);
   const isFocused = useIsFocused();
   const [loading, setLoading] = useState(true);
+  const { handleLogout } = Auth();
 
   const getData = async () => {
     try {
@@ -30,10 +32,8 @@ export default function Dashboard({ navigation }) {
     }
   };
 
-  // console.log("Dashboard: ", user);
-  useEffect(() => {
-    getData();
-    if (user)
+  const fetchUserData = () => {
+    if (user) {
       axios
         .post(
           "https://next13-bhive-task-v1.vercel.app/api/dashboard/fetchExpo",
@@ -41,12 +41,26 @@ export default function Dashboard({ navigation }) {
             data: user,
           }
         )
-        .then((res: any) => {
+        .then((res) => {
           setInputs(res.data.data);
           setLoading(false);
-          // console.log("user data: ", res.data.data);
+          console.log("User data:", res.data.data);
+        })
+        .catch((error) => {
+          console.log("Error fetching user data:", error);
         });
-  }, [isFocused]);
+    }
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  useEffect(() => {
+    if (isFocused && user) {
+      fetchUserData();
+    }
+  }, [isFocused, user]);
 
   return (
     <View className="flex-1">
@@ -100,6 +114,15 @@ export default function Dashboard({ navigation }) {
           >
             Here is the {inputs.length} form details that you have provided:
           </Text>
+          <Pressable className="bg-teal-500 rounded-lg py-4 bg-gradient-to-r from-green-500 to-green-700  font-medium text-lg  text-white w-1/2 justify-center align-middle ml-2 ">
+            <Text
+              style={{ fontFamily: "Poppins_400Regular" }}
+              className="text-center text-white font-medium text-xl "
+              onPress={() => handleLogout()}
+            >
+              LogOut
+            </Text>
+          </Pressable>
           <ScrollView>
             <View>
               {inputs

@@ -1,19 +1,16 @@
 import React from "react";
-import { View, Text, Pressable, Image, ActivityIndicator } from "react-native";
+import { View, Text, Pressable, ActivityIndicator } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
-import { useState, useEffect, useContext } from "react";
-import * as WebBrowser from "expo-web-browser";
+import { useEffect, useContext } from "react";
 import Auth from "../../utils/auth";
 import AuthContext from "../../providers/authProvider";
-
-WebBrowser.maybeCompleteAuthSession();
 
 export default function Login() {
   // const [loading, setLoading] = useState(false);
 
   const { user, setUser, loading } = useContext(AuthContext);
 
-  const { request, promptAsync } = Auth();
+  const { request, promptAsync, handleLogin } = Auth();
   useEffect(() => {
     setUser(user);
     // navigation.navigate("Dashboard", { screen: "DashboardScreen" });
@@ -36,7 +33,10 @@ export default function Login() {
         <View className="flex-col gap-4">
           <Pressable
             disabled={!request}
-            onPress={() => promptAsync()}
+            onPress={() => {
+              promptAsync();
+              handleLogin();
+            }}
             className="text-white bg-gray-700 p-4 w-full font-medium rounded-lg flex-row align-middle gap-2 "
           >
             <AntDesign name="google" size={24} color="white" />
