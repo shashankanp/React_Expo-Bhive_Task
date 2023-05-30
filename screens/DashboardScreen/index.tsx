@@ -131,7 +131,7 @@ export default function Dashboard({ navigation }) {
                           >
                             Name
                           </Text>
-                          : {input.name}
+                          : {input?.name}
                         </Text>
                         <Text className="my-2">
                           <Text

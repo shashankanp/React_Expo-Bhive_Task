@@ -17,7 +17,7 @@ const Navcontainer = () => {
         {user || token ? (
           <>
             <Stack.Screen name="Drawer" component={DrawerNav} />
-            <Stack.Screen name="Main" component={MainStack} />
+            <Stack.Screen name="Success" component={MainStack} />
           </>
         ) : (
           <>
